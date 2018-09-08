@@ -1,7 +1,8 @@
 import copy
 
-USER = 'x'
-AI = 'o'
+# when playing against the cpu, the player is always the player 1
+PLAYER_1 = 'x'
+PLAYER_2 = 'o'
 
 
 def factorial(n):
@@ -11,44 +12,45 @@ def factorial(n):
         return n * factorial(n - 1)
 
 
+# check end game situation and returns 1 for win and -1 for looses
 def check_end_game(tiles):
 
     # X
-    if tiles[0] == USER and tiles[1] == USER and tiles[2] == USER:
+    if tiles[0] == PLAYER_1 and tiles[1] == PLAYER_1 and tiles[2] == PLAYER_1:
         return -1
-    elif tiles[3] == USER and tiles[4] == USER and tiles[5] == USER:
+    elif tiles[3] == PLAYER_1 and tiles[4] == PLAYER_1 and tiles[5] == PLAYER_1:
         return -1
-    elif tiles[6] == USER and tiles[7] == USER and tiles[8] == USER:
+    elif tiles[6] == PLAYER_1 and tiles[7] == PLAYER_1 and tiles[8] == PLAYER_1:
         return -1
-    elif tiles[0] == USER and tiles[3] == USER and tiles[6] == USER:
+    elif tiles[0] == PLAYER_1 and tiles[3] == PLAYER_1 and tiles[6] == PLAYER_1:
         return -1
-    elif tiles[1] == USER and tiles[4] == USER and tiles[7] == USER:
+    elif tiles[1] == PLAYER_1 and tiles[4] == PLAYER_1 and tiles[7] == PLAYER_1:
         return -1
-    elif tiles[2] == USER and tiles[5] == USER and tiles[8] == USER:
+    elif tiles[2] == PLAYER_1 and tiles[5] == PLAYER_1 and tiles[8] == PLAYER_1:
         return -1
 
-    elif tiles[0] == USER and tiles[4] == USER and tiles[8] == USER:
+    elif tiles[0] == PLAYER_1 and tiles[4] == PLAYER_1 and tiles[8] == PLAYER_1:
         return -1
-    elif tiles[2] == USER and tiles[4] == USER and tiles[6] == USER:
+    elif tiles[2] == PLAYER_1 and tiles[4] == PLAYER_1 and tiles[6] == PLAYER_1:
         return -1
     # O
-    elif tiles[0] == AI and tiles[1] == AI and tiles[2] == AI:
+    elif tiles[0] == PLAYER_2 and tiles[1] == PLAYER_2 and tiles[2] == PLAYER_2:
         return 1
-    elif tiles[3] == AI and tiles[4] == AI and tiles[5] == AI:
+    elif tiles[3] == PLAYER_2 and tiles[4] == PLAYER_2 and tiles[5] == PLAYER_2:
         return 1
-    elif tiles[6] == AI and tiles[7] == AI and tiles[8] == AI:
-        return 1
-
-    elif tiles[0] == AI and tiles[3] == AI and tiles[6] == AI:
-        return 1
-    elif tiles[1] == AI and tiles[4] == AI and tiles[7] == AI:
-        return 1
-    elif tiles[2] == AI and tiles[5] == AI and tiles[8] == AI:
+    elif tiles[6] == PLAYER_2 and tiles[7] == PLAYER_2 and tiles[8] == PLAYER_2:
         return 1
 
-    elif tiles[0] == AI and tiles[4] == AI and tiles[8] == AI:
+    elif tiles[0] == PLAYER_2 and tiles[3] == PLAYER_2 and tiles[6] == PLAYER_2:
         return 1
-    elif tiles[2] == AI and tiles[4] == AI and tiles[6] == AI:
+    elif tiles[1] == PLAYER_2 and tiles[4] == PLAYER_2 and tiles[7] == PLAYER_2:
+        return 1
+    elif tiles[2] == PLAYER_2 and tiles[5] == PLAYER_2 and tiles[8] == PLAYER_2:
+        return 1
+
+    elif tiles[0] == PLAYER_2 and tiles[4] == PLAYER_2 and tiles[8] == PLAYER_2:
+        return 1
+    elif tiles[2] == PLAYER_2 and tiles[4] == PLAYER_2 and tiles[6] == PLAYER_2:
         return 1
 
     return 0
@@ -70,11 +72,11 @@ class Tree:
     # simulate all plays
     def simulate(self, init_tiles):
         self.root = Node(init_tiles, 0)
-        self.__aux_simulate(self.root, AI, 1)
+        self.__aux_simulate(self.root, PLAYER_2, 1)
 
     # auxiliary method to simulate the plays
     def __aux_simulate(self, node, player, depth):
-        empty_tiles = list(filter(lambda x: x != USER and x != AI, node.tiles))
+        empty_tiles = list(filter(lambda x: x != PLAYER_1 and x != PLAYER_2, node.tiles))
 
         if len(empty_tiles) <= 0:  # if all tiles are occupied
             return
@@ -89,10 +91,10 @@ class Tree:
                 node_new_tiles = Node(new_tiles, depth)
                 node.next.append(node_new_tiles)
 
-            if player == AI:
-                player = USER
+            if player == PLAYER_2:
+                player = PLAYER_1
             else:
-                player = AI
+                player = PLAYER_2
 
             for i in range(len(empty_tiles)):
                 self.__aux_simulate(node.next[i], player, depth + 1)

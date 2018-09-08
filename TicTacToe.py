@@ -155,5 +155,5 @@ class Game:
         return list(filter(lambda x: x != PLAYER_2 and x != PLAYER_1, tiles))
 
 
-init_board = Game()
-init_board.play()
+game = Game()
+game.play()

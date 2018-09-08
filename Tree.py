@@ -70,10 +70,10 @@ class Tree:
     # simulate all plays
     def simulate(self, init_tiles):
         self.root = Node(init_tiles, 0)
-        self.aux_simulate(self.root, AI, 1)
+        self.__aux_simulate(self.root, AI, 1)
 
     # auxiliary method to simulate the plays
-    def aux_simulate(self, node, player, depth):
+    def __aux_simulate(self, node, player, depth):
         empty_tiles = list(filter(lambda x: x != USER and x != AI, node.tiles))
 
         if len(empty_tiles) <= 0:  # if all tiles are occupied
@@ -95,7 +95,7 @@ class Tree:
                 player = AI
 
             for i in range(len(empty_tiles)):
-                self.aux_simulate(node.next[i], player, depth + 1)
+                self.__aux_simulate(node.next[i], player, depth + 1)
 
     # sum all results
     def sum(self, node):
@@ -111,11 +111,11 @@ class Tree:
 
     # calculate tree height
     def calculate_tree_height(self):
-        self.tree_height = self.aux_calculate_tree_height(self.root)
+        self.tree_height = self.__aux_calculate_tree_height(self.root)
 
     # auxiliary method to calculate the tree height
-    def aux_calculate_tree_height(self, p):
+    def __aux_calculate_tree_height(self, p):
         if len(p.next) == 0:
             return 1
         else:
-            return 1 + max(self.aux_calculate_tree_height(x) for x in p.next)
+            return 1 + max(self.__aux_calculate_tree_height(x) for x in p.next)

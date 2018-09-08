@@ -9,9 +9,7 @@ class Game:
     def __init__(self):
         self._number_of_moves = 0
         self.winner = 'N'
-        self.tiles = []
-        for i in range(9):
-            self.tiles.append(i)
+        self.tiles = list(range(9))
 
     # prints the board
     def print_board(self):
@@ -23,12 +21,13 @@ class Game:
                 print(' - ', end='')
             if (i + 1) % 3 == 0:
                 print('')
+        print()
 
     # movement by the player
     def manual_move(self):
         while True:
             while True:
-                column = input('\nSelect a column: ')
+                column = input('Select a column: ')
                 if '0' <= column < '3':
                     column = int(column)
                     break
@@ -46,6 +45,8 @@ class Game:
 
     # movement by the CPU
     def ai_move(self):
+        print('thinking ...', end = '')
+
         possibilities = Tree()
 
         # simulates all the possibilities
@@ -84,14 +85,14 @@ class Game:
         self.print_board()
 
         if self.winner == PLAYER_1:
-            print("\n\nCongrats player X\n")
+            print("\nCongrats player X\n")
         elif self.winner == PLAYER_2:
-            print("\n\nCongrats player O\n")
+            print("\nCongrats player O\n")
         else:
-            print("\n\nTIC TAC TIE\n")
+            print("\nTIC TAC TIE\n")
 
     # defines if a game is over or not
-    def check_end_game(self, tiles):
+    def check_end_game(self, tiles) -> bool:
         r = False
         # X
         if tiles[0] == PLAYER_1 and tiles[1] == PLAYER_1 and tiles[2] == PLAYER_1:
@@ -151,7 +152,7 @@ class Game:
         return r
 
     # return the empty tiles
-    def empty_tiles(self, tiles):
+    def empty_tiles(self, tiles: list) -> list:
         return list(filter(lambda x: x != PLAYER_2 and x != PLAYER_1, tiles))
 
 

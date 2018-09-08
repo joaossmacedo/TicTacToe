@@ -1,11 +1,12 @@
 import copy
 
+
 # when playing against the cpu, the player is always the player 1
 PLAYER_1 = 'x'
 PLAYER_2 = 'o'
 
 
-def factorial(n):
+def factorial(n: int) -> int:
     if n == 0:
         return 1
     else:
@@ -13,51 +14,51 @@ def factorial(n):
 
 
 # check end game situation and returns 1 for win and -1 for looses
-def check_end_game(tiles):
-
+def check_end_game(tiles) -> int:
+    r = 0
     # X
     if tiles[0] == PLAYER_1 and tiles[1] == PLAYER_1 and tiles[2] == PLAYER_1:
-        return -1
+        r = -1
     elif tiles[3] == PLAYER_1 and tiles[4] == PLAYER_1 and tiles[5] == PLAYER_1:
-        return -1
+        r = -1
     elif tiles[6] == PLAYER_1 and tiles[7] == PLAYER_1 and tiles[8] == PLAYER_1:
-        return -1
+        r = -1
     elif tiles[0] == PLAYER_1 and tiles[3] == PLAYER_1 and tiles[6] == PLAYER_1:
-        return -1
+        r = -1
     elif tiles[1] == PLAYER_1 and tiles[4] == PLAYER_1 and tiles[7] == PLAYER_1:
-        return -1
+        r = -1
     elif tiles[2] == PLAYER_1 and tiles[5] == PLAYER_1 and tiles[8] == PLAYER_1:
-        return -1
+        r = -1
 
     elif tiles[0] == PLAYER_1 and tiles[4] == PLAYER_1 and tiles[8] == PLAYER_1:
-        return -1
+        r = -1
     elif tiles[2] == PLAYER_1 and tiles[4] == PLAYER_1 and tiles[6] == PLAYER_1:
-        return -1
+        r = -1
     # O
     elif tiles[0] == PLAYER_2 and tiles[1] == PLAYER_2 and tiles[2] == PLAYER_2:
-        return 1
+        r = 1
     elif tiles[3] == PLAYER_2 and tiles[4] == PLAYER_2 and tiles[5] == PLAYER_2:
-        return 1
+        r = 1
     elif tiles[6] == PLAYER_2 and tiles[7] == PLAYER_2 and tiles[8] == PLAYER_2:
-        return 1
+        r = 1
 
     elif tiles[0] == PLAYER_2 and tiles[3] == PLAYER_2 and tiles[6] == PLAYER_2:
-        return 1
+        r = 1
     elif tiles[1] == PLAYER_2 and tiles[4] == PLAYER_2 and tiles[7] == PLAYER_2:
-        return 1
+        r = 1
     elif tiles[2] == PLAYER_2 and tiles[5] == PLAYER_2 and tiles[8] == PLAYER_2:
-        return 1
+        r = 1
 
     elif tiles[0] == PLAYER_2 and tiles[4] == PLAYER_2 and tiles[8] == PLAYER_2:
-        return 1
+        r = 1
     elif tiles[2] == PLAYER_2 and tiles[4] == PLAYER_2 and tiles[6] == PLAYER_2:
-        return 1
+        r = 1
 
-    return 0
+    return r
 
 
 class Node:
-    def __init__(self, tiles, depth):
+    def __init__(self, tiles: list, depth: int):
         self.tiles = tiles
         self.depth = depth
         self.result = 0
@@ -70,12 +71,12 @@ class Tree:
         self.tree_height = 0
 
     # simulate all plays
-    def simulate(self, init_tiles):
+    def simulate(self, init_tiles: list):
         self.root = Node(init_tiles, 0)
         self.__aux_simulate(self.root, PLAYER_2, 1)
 
     # auxiliary method to simulate the plays
-    def __aux_simulate(self, node, player, depth):
+    def __aux_simulate(self, node: Node, player: str, depth: int):
         empty_tiles = list(filter(lambda x: x != PLAYER_1 and x != PLAYER_2, node.tiles))
 
         if len(empty_tiles) <= 0:  # if all tiles are occupied
@@ -100,7 +101,7 @@ class Tree:
                 self.__aux_simulate(node.next[i], player, depth + 1)
 
     # sum all results
-    def sum(self, node):
+    def sum(self, node: Node) -> int:
         next_sum = 0
 
         if node is None:
@@ -116,7 +117,7 @@ class Tree:
         self.tree_height = self.__aux_calculate_tree_height(self.root)
 
     # auxiliary method to calculate the tree height
-    def __aux_calculate_tree_height(self, p):
+    def __aux_calculate_tree_height(self, p: Node) -> int:
         if len(p.next) == 0:
             return 1
         else:
